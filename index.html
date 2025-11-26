@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sacred Pause – Prayer for Today</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f0f1b;
+      color: #f0f0ff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .card {
+      max-width: 500px;
+      background: #1a1a2e;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    img {
+      width: 100%;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      color: #e2e2ff;
+    }
+    .caption {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+    .date {
+      color: #8a8ab8;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Prayer for Today</h1>
+    <div id="prayer-content">
+      <p>Loading...</p>
+    </div>
+  </div>
 
+  <script>
+    // 🔹 STEP 1: Define 30 days of prayers (you can expand this)
+    const prayers = {
+      // Format: "MM-DD": { image, caption }
+      "11-01": {
+        image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2f4f5?auto=format&fit=crop&w=600&h=400",
+        caption: "Father, guide my steps today. Let peace lead where anxiety tries to follow."
+      },
+      "11-02": {
+        image: "https://images.unsplash.com/photo-1470770903693-4b4ec5770dda?auto=format&fit=crop&w=600&h=400",
+        caption: "When doubt whispers, remind me: I am held."
+      },
+      "11-03": {
+        image: "https://images.unsplash.com/photo-1506260456017-53e0d8f9be34?auto=format&fit=crop&w=600&h=400",
+        caption: "Breathe Your calm into my chaos, Lord."
+      },
+      // ... add more up to "11-30"
+    };
+
+    // 🔹 STEP 2: Generate missing days (optional – for demo)
+    function fillMissingDays(start, end, month = '11') {
+      for (let d = start; d <= end; d++) {
+        const key = `${month}-${String(d).padStart(2, '0')}`;
+        if (!prayers[key]) {
+          prayers[key] = {
+            image: `https://picsum.photos/600/400?date=${key}`,
+            caption: `A prayer for ${key}. Trust that you are seen, loved, and never alone.`
+          };
+        }
+      }
+    }
+
+    fillMissingDays(1, 30); // Auto-fill Nov 1–30
+
+    // 🔹 STEP 3: Get today’s prayer
+    function getTodaysPrayer() {
+      const today = new Date();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // JS months are 0-based
+      const day = String(today.getDate()).padStart(2, '0');
+      const key = `${month}-${day}`;
+      return prayers[key] || { 
+        image: "https://picsum.photos/600/400", 
+        caption: "No prayer scheduled for today. But remember: you are still in His hands." 
+      };
+    }
+
+    // 🔹 STEP 4: Render
+    const prayer = getTodaysPrayer();
+    const today = new Date().toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+
+    document.getElementById('prayer-content').innerHTML = `
+      <div class="date">${today}</div>
+      <img src="${prayer.image}" alt="Prayer visual">
+      <div class="caption">"${prayer.caption}"</div>
+    `;
+  </script>
+</body>
+</html>
